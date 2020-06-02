@@ -1,35 +1,44 @@
 package com.wechat.controller;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
+import com.wechat.service.WechatAccessTokenService;
+import com.wechat.service.WechatMsgService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
+import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/wechat/")
-@Configuration
 public class WechatController {
 
-    @Value("${token}")
-    private String token;
+    @Resource
+    private WechatMsgService wechatMsgService;
 
-    @GetMapping("verify")
-    public String verify(@RequestParam("signature") String signature,
-                         @RequestParam("timestamp") String timestamp,
-                         @RequestParam("nonce") String nonce,
-                         @RequestParam("echostr") String echoStr) {
-        String[] arr = {token, timestamp, nonce};
-        Arrays.sort(arr);
-        StringBuilder sb = new StringBuilder();
-        for (String s : arr) {
-            sb.append(s);
-        }
-        String sign = DigestUtils.sha1Hex(sb.toString());
-        return sign.equals(signature) ? echoStr : "false";
+    @Resource
+    private WechatAccessTokenService wechatAccessTokenService;
+
+    @GetMapping("callback")
+    public String verify(@RequestParam(value = "signature", required = false, defaultValue = "") String signature,
+                         @RequestParam(value = "timestamp", required = false, defaultValue = "") String timestamp,
+                         @RequestParam(value = "nonce", required = false, defaultValue = "") String nonce,
+                         @RequestParam(value = "echostr", required = false, defaultValue = "") String echoStr) {
+        return wechatMsgService.verify(signature, timestamp, nonce, echoStr);
+    }
+
+    @PostMapping("callback")
+    public String reply(@RequestBody String wechatEncryptMsg,
+                        @RequestParam("msg_signature") String msgSignature,
+                        @RequestParam("timestamp") String timestamp,
+                        @RequestParam("nonce") String nonce) {
+        return wechatMsgService.reply(wechatEncryptMsg, msgSignature, timestamp, nonce);
+    }
+
+    @PostMapping("menu")
+    public String menu() {
+        return wechatAccessTokenService.getAccessToken();
     }
 }
