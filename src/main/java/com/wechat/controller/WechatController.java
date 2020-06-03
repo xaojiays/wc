@@ -1,5 +1,6 @@
 package com.wechat.controller;
 
+import com.wechat.service.WechatMaterialService;
 import com.wechat.service.WechatMenuService;
 import com.wechat.service.WechatMsgService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/wechat/")
@@ -21,6 +21,9 @@ public class WechatController {
 
     @Resource
     private WechatMenuService wechatMenuService;
+
+    @Resource
+    private WechatMaterialService wechatMaterialService;
 
     @GetMapping("callback")
     public String verify(@RequestParam(value = "signature", required = false, defaultValue = "") String signature,
@@ -52,5 +55,15 @@ public class WechatController {
     @GetMapping("del-menu")
     public String delMenu() {
         return wechatMenuService.delMenu();
+    }
+
+    @PostMapping("add-material")
+    public String addMaterial() {
+        return wechatMaterialService.addMaterial();
+    }
+
+    @PostMapping("upload-img")
+    public String uploadImg() {
+        return wechatMaterialService.uploadImg();
     }
 }
