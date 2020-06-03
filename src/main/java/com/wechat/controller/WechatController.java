@@ -1,6 +1,6 @@
 package com.wechat.controller;
 
-import com.wechat.service.WechatAccessTokenService;
+import com.wechat.service.WechatMenuService;
 import com.wechat.service.WechatMsgService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/wechat/")
@@ -19,7 +20,7 @@ public class WechatController {
     private WechatMsgService wechatMsgService;
 
     @Resource
-    private WechatAccessTokenService wechatAccessTokenService;
+    private WechatMenuService wechatMenuService;
 
     @GetMapping("callback")
     public String verify(@RequestParam(value = "signature", required = false, defaultValue = "") String signature,
@@ -31,14 +32,25 @@ public class WechatController {
 
     @PostMapping("callback")
     public String reply(@RequestBody String wechatEncryptMsg,
-                        @RequestParam("msg_signature") String msgSignature,
-                        @RequestParam("timestamp") String timestamp,
-                        @RequestParam("nonce") String nonce) {
+                        @RequestParam(value = "msg_signature", required = false, defaultValue = "") String msgSignature,
+                        @RequestParam(value = "timestamp", required = false, defaultValue = "") String timestamp,
+                        @RequestParam(value = "nonce", required = false, defaultValue = "") String nonce) {
+        System.out.println(wechatEncryptMsg);
         return wechatMsgService.reply(wechatEncryptMsg, msgSignature, timestamp, nonce);
     }
 
-    @PostMapping("menu")
-    public String menu() {
-        return wechatAccessTokenService.getAccessToken();
+    @PostMapping("upgrade-menu")
+    public String upgradeMenu(@RequestBody String menuStr) {
+        return wechatMenuService.upgradeMenu(menuStr);
+    }
+
+    @GetMapping("get-menu")
+    public String getMenu() {
+        return wechatMenuService.getMenu();
+    }
+
+    @GetMapping("del-menu")
+    public String delMenu() {
+        return wechatMenuService.delMenu();
     }
 }

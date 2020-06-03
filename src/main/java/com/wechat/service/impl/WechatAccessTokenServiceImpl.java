@@ -5,9 +5,9 @@ import com.wechat.mapper.WechatAccessTokenMapper;
 import com.wechat.pojo.entity.WechatAccessToken;
 import com.wechat.pojo.vo.WechatAccessTokenVO;
 import com.wechat.service.WechatAccessTokenService;
+import com.wechat.util.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 
@@ -39,8 +39,7 @@ public class WechatAccessTokenServiceImpl implements WechatAccessTokenService {
     private WechatAccessToken getFromWechat() {
         String url = config.getAccessTokenUrl();
         url = String.format(url, config.getAppId(), config.getSecret());
-        RestTemplate restTemplate = new RestTemplate();
-        WechatAccessTokenVO vo = restTemplate.getForObject(url, WechatAccessTokenVO.class);
+        WechatAccessTokenVO vo = HttpUtil.get(url, WechatAccessTokenVO.class);
         if (vo == null) {
             log.info("get wechat access token fail");
             return null;
