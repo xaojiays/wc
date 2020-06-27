@@ -1,0 +1,43 @@
+<main layout:decorator="admin/base">
+    <div layout:fragment="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header"><h4>新增自动回复信息</h4></div>
+                    <div class="card-body">
+                        <form onsubmit="return false;" action="lyear_forms_elements.html" method="post">
+                            <div class="form-group">
+                                <label for="example-select">回复信息类型</label>
+                                <div>
+                                    <select name="example-select" class="form-control" id="example-select" size="1">
+                                        <option value="1">自定义</option>
+                                        <option value="2">事件</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="example-select">信息类型</label>
+                                <div>
+                                    <select name="example-select" class="form-control" id="example-select" size="1">
+                                        <option value="1">图文</option>
+                                        <option value="2">文本</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="example-nf-email">关键词</label>
+                                <input name="example-nf-email" class="form-control" id="example-nf-email" type="email">
+                            </div>
+                            <div class="form-group">
+                                <script id="editor" type="text/plain" style="height:800px;"></script>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary" type="submit">保存</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

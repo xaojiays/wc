@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 
@@ -57,13 +58,18 @@ public class WechatController {
         return wechatMenuService.delMenu();
     }
 
+    @GetMapping("get-materials")
+    public String getMaterials() {
+        return "";
+    }
+
     @PostMapping("add-material")
     public String addMaterial() {
         return wechatMaterialService.addMaterial();
     }
 
     @PostMapping("upload-img")
-    public String uploadImg() {
-        return wechatMaterialService.uploadImg();
+    public String uploadImg(@RequestParam("file") MultipartFile file) {
+        return wechatMaterialService.uploadImg(file);
     }
 }

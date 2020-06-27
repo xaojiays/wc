@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wechat.mapper.WechatUserMapper">
+
+    <resultMap id="AllColumnMap" type="com.wechat.pojo.entity.WechatUser">
+        <result column="id" property="id"/>
+        <result column="open_id" property="openId"/>
+        <result column="subscribe" property="subscribe"/>
+        <result column="nickname" property="nickname"/>
+        <result column="sex" property="sex"/>
+        <result column="city" property="city"/>
+        <result column="country" property="country"/>
+        <result column="province" property="province"/>
+        <result column="language" property="language"/>
+        <result column="head_img_url" property="headImgUrl"/>
+        <result column="subscribe_time" property="subscribeTime"/>
+        <result column="union_id" property="unionId"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+
+    <sql id="all_column">
+        `id`,
+        `open_id`,
+        `subscribe`,
+        `nickname`,
+        `sex`,
+        `city`,
+        `country`,
+        `province`,
+        `language`,
+        `head_img_url`,
+        `subscribe_time`,
+        `union_id`,
+        `created_at`,
+        `updated_at`
+    </sql>
+
+    <insert id="insert">
+        INSERT INTO wechat_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null"> `id`,</if>
+            <if test="pojo.openId!=null"> `open_id`,</if>
+            <if test="pojo.subscribe!=null"> `subscribe`,</if>
+            <if test="pojo.nickname!=null"> `nickname`,</if>
+            <if test="pojo.sex!=null"> `sex`,</if>
+            <if test="pojo.city!=null"> `city`,</if>
+            <if test="pojo.country!=null"> `country`,</if>
+            <if test="pojo.province!=null"> `province`,</if>
+            <if test="pojo.language!=null"> `language`,</if>
+            <if test="pojo.headImgUrl!=null"> `head_img_url`,</if>
+            <if test="pojo.subscribeTime!=null"> `subscribe_time`,</if>
+            <if test="pojo.unionId!=null"> `union_id`,</if>
+            <if test="pojo.createdAt!=null"> `created_at`,</if>
+            <if test="pojo.updatedAt!=null"> `updated_at`,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null">#{pojo.id},</if>
+            <if test="pojo.openId!=null">#{pojo.openId},</if>
+            <if test="pojo.subscribe!=null">#{pojo.subscribe},</if>
+            <if test="pojo.nickname!=null">#{pojo.nickname},</if>
+            <if test="pojo.sex!=null">#{pojo.sex},</if>
+            <if test="pojo.city!=null">#{pojo.city},</if>
+            <if test="pojo.country!=null">#{pojo.country},</if>
+            <if test="pojo.province!=null">#{pojo.province},</if>
+            <if test="pojo.language!=null">#{pojo.language},</if>
+            <if test="pojo.headImgUrl!=null">#{pojo.headImgUrl},</if>
+            <if test="pojo.subscribeTime!=null">#{pojo.subscribeTime},</if>
+            <if test="pojo.unionId!=null">#{pojo.unionId},</if>
+            <if test="pojo.createdAt!=null">#{pojo.createdAt},</if>
+            <if test="pojo.updatedAt!=null">#{pojo.updatedAt},</if>
+        </trim>
+    </insert>
+
+    <update id="update">
+        UPDATE wechat_user
+        SET
+        <if test="pojo.subscribe != null">
+            `subscribe` = #{pojo.subscribe}
+        </if>
+        <if test="pojo.nickname != null">
+            `nickname` = #{pojo.nickname}
+        </if>
+        <if test="pojo.sex != null">
+            `sex` = #{pojo.sex}
+        </if>
+        <if test="pojo.city != null">
+            `city` = #{pojo.city}
+        </if>
+        <if test="pojo.country != null">
+            `country` = #{pojo.country}
+        </if>
+        <if test="pojo.province != null">
+            `province` = #{pojo.province}
+        </if>
+        <if test="pojo.language != null">
+            `language` = #{pojo.language}
+        </if>
+        <if test="pojo.headImgUrl != null">
+            `head_img_url` = #{pojo.headImgUrl}
+        </if>
+        <if test="pojo.subscribeTime != null">
+            `subscribe_time` = #{pojo.subscribeTime}
+        </if>
+        <if test="pojo.unionId != null">
+            `union_id` = #{pojo.unionId}
+        </if>
+        <if test="pojo.createdAt != null">
+            `created_at` = #{pojo.createdAt}
+        </if>
+        <if test="pojo.updatedAt != null">
+            `updated_at` = #{pojo.updatedAt}
+        </if>
+        <where>
+            `open_id` = #{pojo.openId}
+            <if test="pojo.unionId != null">
+                `union_id` = #{pojo.unionId}
+            </if>
+        </where>
+    </update>
+
+    <select id="exist" resultType="boolean">
+        SELECT COUNT(*) FROM wechat_user
+        <where>
+            `open_id` = #{pojo.openId}
+            <if test="pojo.unionId != null">
+                AND `union_id` = #{pojo.unionId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getWechatUsers" resultMap="AllColumnMap">
+        SELECT
+        <include refid="all_column"></include>
+        FROM wechat_user
+        ORDER BY `id` DESC
+        LIMIT #{offset}, #{size}
+    </select>
+</mapper>

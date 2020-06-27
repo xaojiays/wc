@@ -1,6 +1,7 @@
 server:
   port: 8888
 
+encrypt: false
 token: wechat
 appId: wx150d6699572b00e5
 aesKey: W81CGmq6eM3B7cQ8JyurG8SWF5Sagu9RDUa9umQcdER
@@ -9,6 +10,8 @@ accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_creden
 menuUrl: https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s
 getMenuUrl: https://api.weixin.qq.com/cgi-bin/get_current_selfmenu_info?access_token=%s
 delMenuUrl: https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=%s
+uploadImgUrl: https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=%s
+userUrl: https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN
 
 mybatis:
   configuration:
@@ -36,3 +39,13 @@ db:
   testOnReturn: false
   filters: stat,wall,log4j
   logSlowSql: true
+
+spring:
+  thymeleaf:
+    cache:  false
+    prefix: classpath:/templates/
+    check-template-location: true
+    suffix: .html
+    encoding: UTF-8
+    content-type: text/html
+    mode: LEGACYHTML5
